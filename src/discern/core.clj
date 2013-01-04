@@ -1,18 +1,21 @@
 (ns discern.core
   (:require [clojure.java.io :as io]))
 
-(comment (defn longest [xs ys]
-           (if (> (count xs) (count ys))
-             xs
-             ys))
+(comment
+  ;; naive longest common subsequence from the internet
+  (defn longest [xs ys]
+    (if (> (count xs) (count ys))
+      xs
+      ys))
+  
+  (defn lcs [seqx seqy]
+    (when-let [[x & xs] (seq seqx)]
+      (when-let [[y & ys] (seq seqy)]
+        (if (= x y)
+          (cons x (lcs xs ys))
+          (longest (lcs seqx ys) (lcs xs seqy)))))))
 
-         (defn lcs [seqx seqy]
-           (when-let [[x & xs] (seq seqx)]
-             (when-let [[y & ys] (seq seqy)]
-               (if (= x y)
-                 (cons x (lcs xs ys))
-                 (longest (lcs seqx ys) (lcs xs seqy)))))))
-
+;; dynamic programming lcs
 (defn nth-2d [coll m i j]
   (nth coll (+ (* i m) j)))
 
